@@ -285,6 +285,10 @@ export default new Map([\n${lines.join(',\n')}]);
 	}
 
 	scopedStore(collectionName: string): DataStore {
+		// Ensure the collection exists in the store even if no entries are added
+		if (!this._collections.has(collectionName)) {
+			this._collections.set(collectionName, new Map());
+		}
 		return {
 			get: <TData extends Record<string, unknown> = Record<string, unknown>>(key: string) =>
 				this.get<DataEntry<TData>>(collectionName, key),

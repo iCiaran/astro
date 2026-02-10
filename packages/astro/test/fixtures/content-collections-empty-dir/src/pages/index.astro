@@ -1,7 +1,10 @@
 ---
 import { getCollection } from 'astro:content'
 
-const entries = await getCollection('blogs');
+const blogEntries = await getCollection('blog');
+const newsEntries = await getCollection('news');
+
 ---
 
-<h1 data-entries={JSON.stringify(entries)}>Entries length: {entries.length}</h1>
+<h1 id="blog" data-blog-entries={JSON.stringify(blogEntries)}>Blog entries length: {blogEntries.length}</h1>
+<h1 id="news" data-news-entries={JSON.stringify(newsEntries)}>News entries length: {newsEntries.length}</h1>

@@ -9,8 +9,8 @@ const blog = defineCollection({
 	}),
 });
 
-const blogMeta = defineCollection({
-	loader: glob({ pattern: '**/*.{json,yaml}', base: './src/content/blogMeta' }),
+const news = defineCollection({
+	loader: glob({ pattern: '**/*.{json,yaml}', base: './src/content/news' }),
 	schema: z.object({
 		title: z.string(),
 	}),
@@ -18,5 +18,5 @@ const blogMeta = defineCollection({
 
 export const collections = {
 	blog,
-	blogMeta,
+	news,
 };

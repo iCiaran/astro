@@ -132,7 +132,7 @@ export function createGetCollection({
 			console.warn(
 				`The collection ${JSON.stringify(
 					collection,
-				)} does not exist or is empty. Please check your content config file for errors.`,
+				)} does not exist. Please check your content config file for errors.`,
 			);
 			return [];
 		}

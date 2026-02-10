@@ -268,7 +268,11 @@ describe('Content Collections', () => {
 	});
 
 	describe('With empty collections directory', () => {
-		it('Handles the empty directory correctly', async () => {
+		it('Handles the missing/empty directory correctly', async () => {
+			const warnings = [];
+			const originalWarn = console.warn;
+			console.warn = (...args) => warnings.push(args.join(' '));
+
 			const fixture = await loadFixture({
 				root: './fixtures/content-collections-empty-dir/',
 			});
@@ -277,14 +281,26 @@ describe('Content Collections', () => {
 				await fixture.build({ force: true });
 			} catch (e) {
 				error = e.message;
+			} finally {
+				console.warn = originalWarn;
 			}
 			assert.equal(error, undefined);
 
 			const html = await fixture.readFile('/index.html');
 			const $ = cheerio.load(html);
-			const h1 = $('h1');
-			assert.equal(h1.text(), 'Entries length: 0');
-			assert.equal(h1.attr('data-entries'), '[]');
+			const blogElement = $('#blog');
+			const newsElement = $('#news');
+			assert.equal(blogElement.text(), 'Blog entries length: 0');
+			assert.equal(blogElement.attr('data-blog-entries'), '[]');
+			assert.equal(newsElement.text(), 'News entries length: 0');
+			assert.equal(newsElement.attr('data-news-entries'), '[]');
+
+			const collectionWarning = warnings.find(
+				(w) =>
+					w.includes('The collection') &&
+					w.includes('does not exist. Please check your content config file for errors.'),
+			);
+			assert.equal(collectionWarning, undefined, 'Should not warn when accessing');
 		});
 	});
 
